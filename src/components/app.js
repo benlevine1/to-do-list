@@ -2,11 +2,12 @@ import 'materialize-css/dist/css/materialize.min.css'
 import 'materialize-css/dist/js/materialize'
 import '../assets/css/app.css'
 import React, {Component} from 'react';
-import {Route} from 'react-router-dom';
+import {Route, Switch} from 'react-router-dom';
 import Axios from 'axios';
 import List from './list';
 import AddItem from './add_item'
 import ViewItem from './view_item'
+import NotFound from './404'
 import {BASE_URL, API_KEY} from '../config/api'
 
 
@@ -44,17 +45,19 @@ class App extends Component {
         const{list} = this.state
         return(
             <div className = 'container'>
-                
-                <Route exact path = "/" render = {()=>{
-                    return <List toggle = {this.toggleComplete} delete = {this.deleteItem} toDos = {list}/>
-                }}/>
-                
-                <Route path = "/add-item" render = {(props)=>{ 
-                    return <AddItem {...props} add = {this.addItem}/>
-                }}/>
+                <Switch path = '/'>
+                    <Route exact path = "/" render = {()=>{
+                        return <List toggle = {this.toggleComplete} delete = {this.deleteItem} toDos = {list}/>
+                    }}/>
+                    
+                    <Route path = "/add-item" render = {(props)=>{ 
+                        return <AddItem {...props} add = {this.addItem}/>
+                    }}/>
 
-                <Route path = '/item/:item_id' component = {ViewItem}/>
+                    <Route path = '/item/:item_id' component = {ViewItem}/>
 
+                    <Route component = {NotFound}/>
+                </Switch>
             </div>
             );
         }
