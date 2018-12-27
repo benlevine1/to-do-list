@@ -6,13 +6,9 @@ import {Route} from 'react-router-dom';
 import Axios from 'axios';
 import List from './list';
 import AddItem from './add_item'
+import ViewItem from './view_item'
+import {BASE_URL, API_KEY} from '../config/api'
 
-
-//Stuff to do over the weekend, toggle should change from true to false, rerender the list, should be able to distinctly tell whether item 
-// is complete, add completed functionality
-
-const BASE_URL = 'http://api.reactprototypes.com/todos';
-const API_KEY = '?key=chipotlesucks'
 
 class App extends Component {
     state = {
@@ -49,11 +45,16 @@ class App extends Component {
         return(
             <div className = 'container'>
                 
-                <Route exact path = "/" render = {()=>{return <List toggle = {this.toggleComplete} delete = {this.deleteItem} toDos = {list}/>}}/>
+                <Route exact path = "/" render = {()=>{
+                    return <List toggle = {this.toggleComplete} delete = {this.deleteItem} toDos = {list}/>
+                }}/>
                 
                 <Route path = "/add-item" render = {(props)=>{ 
                     return <AddItem {...props} add = {this.addItem}/>
                 }}/>
+
+                <Route path = '/item/:item_id' component = {ViewItem}/>
+
             </div>
             );
         }
